@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "Chain Chaos",
+  "short_name": "Chain Chaos",
+  "description": "Simulator pasar kripto dengan 62 server, drama, dompet, dan bank.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1020",
+  "theme_color": "#4a2fe0",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

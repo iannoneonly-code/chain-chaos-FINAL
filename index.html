@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chain Chaos v1.6 – Simulator 62 Server Kripto</title>
+<meta name="theme-color" content="#4a2fe0">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0f7;--cd:#fff;--tx:#161a2b;--mu:#667089;--ln:#dde1ee;--ac:#5b3df5;--up:#0b9c8a;--dn:#e5484d;--am:#f59f00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1020;--cd:#171b31;--tx:#e9ecfa;--mu:#8f98b8;--ln:#262c4a;--ac:#9f8cff;--up:#2dd4bf;--dn:#ff6b70;--am:#ffc233}}
+:root[data-theme="dark"]{--bg:#0d1020;--cd:#171b31;--tx:#e9ecfa;--mu:#8f98b8;--ln:#262c4a;--ac:#9f8cff;--up:#2dd4bf;--dn:#ff6b70;--am:#ffc233}
+html,body{height:100%}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--cd);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--cd);border-bottom:1px solid var(--ln);padding:10px 14px 8px}
+.top{display:flex;justify-content:space-between;align-items:center}
+h1{font:700 19px "Space Grotesk",system-ui,sans-serif;margin:0;letter-spacing:-.3px}
+button{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px 10px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--ac)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.stats div{background:var(--bg);border-radius:8px;padding:6px 9px;font-size:12px;color:var(--mu)}
+.stats b{display:block;font:700 16px "Space Grotesk",system-ui,sans-serif;color:var(--tx)}
+.tabs,.chips{display:flex;gap:6px;overflow-x:auto}
+.tabs button{flex:1;font-weight:600}
+.chips{margin-top:7px}.chips button{white-space:nowrap;font-size:13px;padding:4px 10px;border-radius:99px}
+button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:10px 12px;width:100%;max-width:640px;margin:0 auto}
+.r{background:var(--cd);border:1px solid var(--ln);border-radius:10px;margin-bottom:7px;overflow:hidden}
+.r.dr{border-color:var(--am)}.r.cr{border-color:var(--dn)}
+.rm{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer}
+.tk{flex:1;min-width:0}.tk b{font:700 16px "Space Grotesk",system-ui,sans-serif}
+.tk small{display:block;color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dg{font-size:12px;color:var(--am);font-weight:600}.cr .dg{color:var(--dn)}
+.pc{text-align:right;padding:2px 6px;border-radius:6px}.pc b{font:700 16px "Space Grotesk",system-ui,sans-serif}.pc small{display:block;font-size:12px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.dt{display:none;padding:0 12px 12px;font-size:13px;color:var(--mu)}
+.r.op .dt{display:block}
+.bt{display:grid;grid-template-columns:repeat(4,auto);gap:6px;margin-top:8px}
+.po{display:flex;gap:10px;background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:10px 12px;margin-bottom:7px}
+.po.nw{border-left:4px solid var(--am)}
+.av{font-size:22px;line-height:1.1}.pb{min-width:0;flex:1}
+.ph{font-size:12px;color:var(--mu)}.ph b{color:var(--tx);font-size:13px}
+.tg{font-style:normal;background:var(--dn);color:#fff;border-radius:4px;padding:0 5px;font-size:11px;font-weight:700}
+.pt{margin:3px 0}.pl{font-size:12px;color:var(--mu)}
+#ts{position:fixed;left:12px;right:12px;bottom:72px;z-index:20;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+#ts div{background:var(--tx);color:var(--bg);padding:9px 12px;border-radius:9px;font-size:13px}
+.em{text-align:center;color:var(--mu);padding:30px 10px}
+.sk{width:56px;height:22px;flex:none}.sk polyline{stroke:var(--up)}.sk.dn polyline{stroke:var(--dn)}
+.pc.fu b{color:var(--up)}.pc.fd b{color:var(--dn)}.pc.fu{animation:fu .9s}.pc.fd{animation:fd .9s}
+@keyframes fu{from{background:color-mix(in srgb,var(--up) 30%,transparent)}}@keyframes fd{from{background:color-mix(in srgb,var(--dn) 30%,transparent)}}
+@media (prefers-reduced-motion:reduce){.pc{animation:none!important}}
+.bn{display:flex;background:var(--cd);border-top:1px solid var(--ln)}
+.bn button{flex:1;border:0;border-radius:0;background:none;padding:8px 0 6px;font-size:11px;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
+.bn button.on{color:var(--ac);font-weight:700;background:none}
+.bn i{font-style:normal;font-size:20px;position:relative}
+.bn u{position:absolute;top:-3px;right:-12px;background:var(--dn);color:#fff;font:700 10px system-ui;border-radius:9px;padding:1px 5px;text-decoration:none}
+.av{width:40px;height:40px;border-radius:50%;background:var(--bg);display:grid;place-items:center;flex:none}
+.tr{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px}.tr span{white-space:nowrap;background:var(--cd);border:1px solid var(--ln);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600}
+.wc{background:var(--ac);color:#fff;border-radius:14px;padding:16px;margin-bottom:10px}.wc b{display:block;font:700 28px "Space Grotesk",system-ui,sans-serif}.wc small{display:block;opacity:.85}
+body[data-tab]:not([data-tab="0"]) .stats,body[data-tab="2"] .chips,body[data-tab="3"] .chips,body[data-tab="4"] .chips,body[data-tab="5"] .chips{display:none}
+.bc{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:12px;margin-bottom:8px}.bc h3,#bk>h3{margin:0 0 4px;font:700 15px "Space Grotesk",system-ui,sans-serif}.bc p{margin:0;font-size:13px;color:var(--mu)}.bc.pj{border-color:var(--dn)}.bc .bt{grid-template-columns:repeat(2,1fr)}
+#sp0{position:fixed;inset:0;z-index:50;background:#4a2fe0;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s}#sp0 b{font-size:64px}#sp0 h2{font:700 26px "Space Grotesk",system-ui,sans-serif;margin:6px 0}#sp0 p{opacity:.8;margin:0}#sp0.x{opacity:0;pointer-events:none}
+.po.of{border-color:var(--ac)}.po.of .tg{background:var(--ac)}.po.of.nw{border-left-color:var(--ac)}
+.ck{font-size:12px;color:var(--mu);margin-top:1px}
+.cs{border:1px dashed var(--ac);border-radius:14px;padding:14px;margin-top:10px;font-size:13px}.cs p{margin:8px 0}.cs .lb{background:var(--am);color:#000;border-radius:5px;padding:1px 7px;font-size:11px}.cs button:disabled{opacity:.5}
+input{user-select:text;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px 8px;flex:1;min-width:0}
+.cm{margin-top:6px;font-size:13px}.cm>div{padding:3px 0}.cb{display:flex;gap:6px;margin-top:6px}
+.pl button{padding:2px 8px;font-size:12px;border-radius:99px;margin-right:6px}.pl .lk.on{color:var(--dn);border-color:var(--dn)}
+.chp{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.chp button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.num{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}.bc p+.bt,.bc p+button{margin-top:8px}
+</style></head><body>
+<header>
+<div class="top"><div><h1 id="ttl">⛓ Chain Chaos</h1><div class="ck" id="ck"></div></div><button id="sp">⏸ Jeda</button></div>
+<div class="stats"><div>Kas<b id="cs"></b></div><div>Kekayaan<b id="nw"></b></div><div>Pasar<b id="dr"></b></div></div>
+
+<div class="chips"><button data-f="0" class="on">Semua 62</button><button data-f="1">⭐ Pantau</button><button data-f="2">🔥 Drama</button><button data-f="3">💼 Asetku</button></div>
+</header>
+<main><section id="mk"></section><section id="fd" hidden></section><section id="pf" hidden></section><section id="bk" hidden></section><section id="tk" hidden></section><section id="kz" hidden></section></main>
+<nav class="bn"><button data-t="0" class="on"><i>📈</i>Pasar</button><button data-t="1"><i>💬<u id="bd" hidden></u></i>Kicau</button><button data-t="2"><i>👛</i>Dompet</button><button data-t="3"><i>🏦</i>Bank</button><button data-t="4"><i>🛒</i>Toko</button><button data-t="5"><i>🎰</i>Kasino</button></nav>
+<div id="sp0"><b>⛓</b><h2>Chain Chaos</h2><p>Versi 1.6 · Menghubungkan ke 62 server…</p></div>
+<div id="ts"></div>
+<script>
+const D=`KopiChain|KPC|L|database pelanggan ditaruh di Google Sheet publik
+NusaNode|NSA|H|node utamanya jalan di laptop admin
+GorengCoin|GRG|R|tim pengembangnya sekarang jualan gorengan
+BaksoProtocol|BKS|C|CEO-nya ketahuan pakai nama samaran
+TuyulFinance|TYL|W|bot tuyul dan dompet pendirinya ternyata sama
+WartegDAO|WRT|F|voting DAO diputuskan lewat polling Story
+GarudaLedger|GRD|G|izin usahanya ternyata hasil fotokopi
+JawirSwap|JWR|B|bridge-nya dibuat sambil begadang 3 hari
+SultanVault|SLT|L|brankas digital dengan password 123456
+CilokNetwork|CLK|D|airdrop dibagi lewat grup WhatsApp
+KancilBridge|KNC|B|kontrak pintar ditulis anak magang
+OjolToken|OJL|C|CEO-nya menghilang sejak ambil orderan
+SambalLabs|SMB|H|private key disimpan di catatan HP
+BatikChain|BTK|A|auditornya ternyata sepupu pendiri
+RawonMining|RWN|W|tiga paus tiba-tiba bergerak bersamaan
+PempekPay|PMP|L|log transaksi terpajang di folder publik
+KecapExchange|KCP|R|saldo user dipinjam buat beli ruko
+DukunOracle|DKN|F|oracle harga diramal pakai kartu tarot
+MieAyamMint|MAM|D|NFT-nya cuma gambar mie ayam
+SateLayer|SAT|H|node validator ketusuk exploit
+GadoGadoDEX|GDG|B|likuiditas dicampur tanpa aturan
+KratonCloud|KRT|G|server disita karena tunggakan listrik
+BecakRollup|BCK|F|dua kubu dev saling blokir di GitHub
+AngkotGas|ANG|W|biaya gas naik tiap kali ngetem
+TempeProtocol|TMP|A|laporan auditnya cuma satu halaman
+LontongLend|LTG|R|bunga 900% tanpa jaminan apa pun
+SingkongSwap|SNK|C|pendiri live TikTok sambil marah-marah
+CendolCapital|CDL|L|email 2 juta user bocor ke forum
+PocongPrivacy|PCG|H|koin privasi yang malah serba terlihat
+KuntiKeys|KNT|L|seed phrase cadangan terunggah ke cloud publik
+PetaiDEX|PTI|G|transaksinya berbau mencurigakan
+OpakStaking|OPK|R|reward staking dibayar pakai token sendiri
+KerakTelor|KRK|D|airdrop khusus pemegang KTP Betawi
+AyamGeprek|GPK|W|dompet paus pindah ke bursa pas jam makan siang
+BandrekBridge|BDK|B|jembatan antar-chain goyang kalau hujan
+RendangRollup|RDG|A|diaudit 8 jam, bug baru ketemu 8 hari kemudian
+SoteDAO|STE|F|proposal governance panjangnya 400 halaman
+KleponLabs|KLP|H|kontraknya meledak kalau diklik dua kali
+CamilanCoin|CML|C|promosinya pakai artis bayaran
+OndeOnde|OND|L|data KYC tersimpan di grup Telegram
+SeblakSwap|SBL|R|liquidity pool mendadak kosong dan pedas
+DodolDeFi|DDL|F|dev ribut soal ukuran blok
+NasiGorengNet|NGR|D|airdrop salah kirim ke 9.000 dompet kosong
+TahuBulat|THB|W|harganya digoreng dadakan lima ribuan
+PisangNugget|PSN|G|regulator minta laporan pakai kop surat
+MartabakMint|MRT|H|API key terlihat di video tutorial
+SurabiSat|SRB|B|bridge hanya jalan di hari kerja
+LaksaLedger|LKS|A|auditnya cuma isi checklist dari internet
+ColengChain|CLG|C|admin tiba-tiba DM minta transfer
+KetoprakKit|KTP|L|backup database ketinggalan di warnet
+CimolCash|CMO|D|airdrop wajib kirim foto cimol
+RujakRelay|RJK|H|relay node terbuka tanpa kata sandi
+KolakKoin|KLK|C|CEO bikin podcast isinya klaim tanpa bukti
+DawetDEX|DWT|W|likuiditas dikuasai satu dompet sultan
+BuburMint|BBR|F|komunitas pecah soal bubur diaduk atau tidak
+SiomayStake|SMY|R|APY dihitung pakai kalkulator rusak
+TongsengTrust|TGS|A|laporan audit tertukar dengan menu kafe
+CirengLayer|CRG|B|bridge-nya cuma ditempel lakban
+BajigurBank|BJG|L|data nasabah ikut terbawa saat update server
+RotiBakarRPC|RTB|G|izin edar ternyata atas nama sepupu
+AsinanAI|ASN|H|model AI-nya membocorkan prompt rahasia
+PandanSwap|PDN|D|airdrop khusus yang bisa jawab teka-teki dev`.split("\n").map(l=>l.split("|"));
+// [rumor, krisis, pulih, ambruk, pengali harga saat krisis]
+const T={
+L:["🕵️ Bisik-bisik soal {n}: {q}.","🚨 DATA BOCOR! Jutaan data pengguna {n} ({t}) beredar di forum gelap. Konon: {q}.","✅ {n} ganti rugi user dan rekrut tim keamanan baru. Kepercayaan pulih pelan.","💀 Regulator turun, user kabur massal dari {n}. #Bubar{t} trending.",.7],
+R:["👀 Dompet pendiri {n} gerak aneh. {q}.","🏃 RUG PULL! Likuiditas {n} disedot habis. {q}.","🤝 Pendiri {n} balikin sebagian dana setelah diteror netizen.","☠️ Pendiri {n} resmi menghilang. Grup Telegram dibubarkan.",.4],
+H:["🔧 Dev {n} bilang ada gangguan sistem. Ternyata: {q}.","🔥 {n} DIRETAS! Dana jutaan dolar mengalir ke dompet misterius. {q}.","🧯 Hacker {n} balikin dana demi bounty. Layanan jalan lagi.","💥 Hacker {n} kabur lewat mixer. Penarikan dibekukan.",.5],
+C:["📰 Thread viral soal CEO {n}: {q}.","😱 Skandal CEO {n} meledak, investor panik. Isunya: {q}.","🎤 CEO {n} minta maaf live 3 jam, followers malah simpati.","🚪 CEO {n} mundur, dewan direksi saling tuding.",.72],
+F:["⚔️ Komunitas {n} mulai retak: {q}.","🍴 HARD FORK {n}! Dua rantai, dua kubu, satu grup WA meledak. {q}.","🕊️ Dua kubu {n} sepakat damai dan merger rantai.","🫠 Dua rantai {n} sama-sama sepi. Likuiditas terpecah.",.8],
+A:["📑 Laporan audit {n} dinanti publik, tapi {q}.","🧾 Audit {n} rilis: banyak celah kritis! {q}.","🛠️ {n} tambal semua bug, audit ulang lulus.","🙈 {n} abaikan temuan audit. Investor ragu.",.8],
+W:["🐋 Whale Alert: dompet raksasa {n} aktif lagi. {q}.","📉 PAUS BUANG {t}! Order jual raksasa bikin harga ambruk. {q}.","🐳 Paus beli balik {t} di bawah. Harga rebound.","🌊 Paus lain ikut jual {t}. Likuiditas menipis.",.65],
+G:["🏛️ Surat dari regulator beredar untuk {n}: {q}.","🚔 {n} DIGEREBEK regulator! Operasional dibekukan. {q}.","📜 {n} lolos pemeriksaan dengan denda ringan.","🔒 Izin {n} dicabut. Aset pengguna dibekukan.",.6],
+B:["🌉 Peneliti keamanan curiga bridge {n}: {q}.","💣 BRIDGE {n} JEBOL! Aset tak bisa diklaim. {q}.","🧰 Tim {n} tambal bridge dan beri kompensasi.","🪦 Bridge {n} ditutup permanen. Token wrapped tak berharga.",.55],
+D:["🎁 Bocoran airdrop {n}: {q}.","🚀 AIRDROP {n} CAIR! Harga meroket karena FOMO. {q}.","🎉 Airdrop {n} bikin komunitas ramai, volume terus naik.","🧹 Pemburu airdrop jual semua {t}. Harga ambles.",1.7]};
+const P=[["@paman_hodl","👴"],["@sultan_gorengan","🤑"],["@bocil_leverage","🧒"],["@auditor_kw","🕵️"],["@whale_alert_id","🐋"],["@analis_kaleng","📊"],["@ibu_staking","👩"],["@anon_leaker","🎭"],["@mod_telegram","🛡️"],["@fud_master","😈"],["@kang_ojol_cuan","🛵"],["@mama_muda_kpr","👩‍👧"],["@tante_arisan","💅"],["@om_trader_subuh","🌅"],["@mahasiswa_kere","🎓"],["@satpam_komplek","💂"],["@pak_rt_blokchain","🏘️"],["@jomblo_hodler","💔"],["@dukun_chart","🔮"],["@bu_dosen_defi","👩‍🏫"],["@gamer_airdrop","🎮"],["@koko_ruko","🏪"],["@abang_bakso_nft","🍜"],["@guru_honorer","📚"],["@barista_degen","☕"],["@kang_parkir_web3","🅿️"],["@nenek_staking","👵"],["@intel_nyinyir","🕶️"],["@pelajar_cuan","🎒"],["@anak_kos_degen","🏠"],["@kurir_paket_btc","📦"],["@bapak_kpr_cicilan","🏦"],["@judol_addict","🎰"],["@bang_cuan_kilat","⚡"],["@mbak_skincare_nft","💄"],["@tukang_las_btc","🔧"],["@driver_taksi_eth","🚕"],["@perawat_shift_malam","🩺"],["@petani_milenial","🌱"],["@notaris_santuy","📜"],["@kades_defi","🏛️"],["@fotografer_nft","📷"],["@dj_kafe_degen","🎧"],["@pelatih_futsal","⚽"],["@kang_cukur_chart","✂️"],["@penulis_whitepaper","✍️"],["@admin_grup_arisan","📋"],["@youtuber_gagal","📹"],["@sopir_truk_hodl","🚚"],["@mpok_catering","🍱"],["@satpam_bank","🛡️"],["@bapak_komplek_fud","📣"],["@mahasiswa_skripsi_btc","📖"],["@konten_kreator_ruko","🎬"]];
+const N=[["@kabar_kripto","📰"],["@leakwatch_id","🚨"],["@detik_blok","⛓️"]];
+const NG=["{t} bubar jalan 😭","Sudah kubilang jangan percaya {n}","Admin {n} kok diam aja","Hold sampai nol, katanya diamond hands 💎","Ini sih masuk kategori belajar mahal","Buka lapak gorengan aja deh","Uang dapur ikut amblas, mampus aku","Cicilan motor aja belum lunas, sekarang ini","Pak RT, tolong mediasi dong","Katanya cuan, ternyata cuma cerita"];
+const PS=["{t} to the moon 🚀","Yang jual kemarin pasti nyesel","Buy the dip, bro","{n} kuat banget nih","Rebound ala sinetron 🔥","Cuan buat DP ruko nih 🏪","Arisan minggu ini dibayar pakai {t}","Gaji honorer cukup, berkat {t}"];
+const AM=["Siapa lagi yang pantau {t}? 👀","Pagi, cek {t} dulu baru cek kulkas","Gas fee {n} hari ini bikin nangis","Rumor: {n} mau kolaborasi sama proyek misterius","Analisis kaleng: {t} bakal naik, atau turun. Pasti salah satu","Min, kapan {t} listing di bursa besar?"];
+const R=Math.random,r=n=>R()*n|0,$=q=>document.querySelector(q);
+const OA=[["@OtoritasJasaKripto","🏛️",["Waspada: investasi dengan janji cuan pasti hampir selalu bodong.","Masyarakat diimbau mengecek legalitas platform sebelum menyimpan dana.","Pinjol ilegal tidak kami awasi. Gunakan layanan berizin, ya!"]],["@Bank_Rakyat","🏦",["Tabungan Rakyat: bunga aman, tanpa drama blockchain 😌","Kredit mudah, bunga jelas, penagih sopan. Cek di Bank Rakyat.","Hati-hati admin palsu. Kami tidak pernah meminta OTP."]],["@Bursa_Garuda","📊",["Perdagangan aset kripto hari ini berlangsung normal.","Pengingat: volatilitas tinggi. Gunakan dana dingin saja."]],["@Nusantara_Telko","📡",["Gangguan jaringan di beberapa wilayah sedang kami perbaiki. Mohon maaf 🙏","Paket Sultan: kuota 1 TB untuk trader subuh."]],["@Tokonesia","🛒",["Flash sale emas batangan! Gratis ongkir se-Nusantara 🎁","Belanja kebutuhan dapur dulu, baru beli koin ya, Kak."]],["@OjolKu_Official","🛵",["Bayar ongkos pakai token? Belum bisa ya, Kak 😅","Pengemudi kami bukan penagih pinjol. Tolong jangan tertukar."]],["@Kereta_Nusa","🚆",["Perjalanan KA tepat waktu. Pasar kripto? Kami tidak bisa janji 😂"]],["@NusaEnergi","⛽",["Harga energi stabil. Menambang kripto di kantor kami dilarang, Pak."]]],OFC=["Kami memantau perkembangan {n} ({t}) dan meminta klarifikasi resmi.","Investor {t} diimbau tenang dan tidak panik jual. Pemeriksaan berjalan.","Terkait {n}: kami belum menemukan izin resmi. Hati-hati, ya."],VF=new Set(OA.map(a=>a[0])),CS='<div class="cs"><b class="lb">COMING SOON</b> <b>Integrasi Chain Chaos v1.6 ke v2.0</b><p><b>YOUR JOURNEY DOESN’T END HERE.</b><br>Hubungkan perjalananmu dari Chain Chaos v1.6 menuju generasi berikutnya. Sistem pemindahan progres sedang dipersiapkan.</p><p>Akun Universal · Kode Migrasi Privat · Pemindahan Progres · Profil Bersama · Sinkronisasi Lintas Versi · Dompet Bersama (Rp)</p><button disabled>Migrasi belum aktif</button> <small>Status: UNDER DEVELOPMENT</small></div><div class="cs"><b>Chain Chaos v1.6</b><p>Baru: Toko, Kasino (simulasi), komentar di Kicau, 54 NPC netizen, dan 8 aset baru di Bank.</p></div>';
+const f=x=>x>=100?x.toFixed(0):x>=1?x.toFixed(2):x.toFixed(4),K=15000,m=x=>{const v=x*K,a=Math.abs(v),c=n=>n.toFixed(a>=1e12?2:1).replace(".",",");return(v<0?"-":"")+"Rp"+(a>=1e12?c(a/1e12)+" T":a>=1e9?c(a/1e9)+" M":a>=1e7?c(a/1e6)+" jt":Math.round(a).toLocaleString("id-ID"))};
+const V=D.map((d,i)=>{const p0=+(1.5+((i*37)%97)*(1+i%5)*.9).toFixed(2);return{i,n:d[0],t:d[1],y:d[2],q:d[3],p:p0,p0,o:p0,h:0,sec:0,st:0,cd:r(60),w:0,g:1,hs:[p0,p0],lp:p0}});
+const S={cash:10000,k:0,sp:1,sv:0,ln:0,pj:0,ins:0,gw:0,gl:0},AS=[{e:"🥇",nm:"Emas Batangan",p:500,v:.008,d:.0001,n:0},{e:"🏞️",nm:"Tanah Kavling",p:5000,v:.004,d:.0002,n:0},{e:"🏪",nm:"Ruko Pinggir Jalan",p:20000,v:.004,d:.00015,n:0},{e:"🚗",nm:"Mobil Bekas",p:8000,v:.004,d:-.0002,n:0},{e:"🐟",nm:"Kolam Lele",p:300,v:.04,d:0,n:0},{e:"🏢",nm:"Apartemen (ada sewa)",p:60000,v:.003,d:.0002,n:0,y:.00002},{e:"🌾",nm:"Sawah",p:12000,v:.003,d:.0001,n:0},{e:"⛵",nm:"Kapal Nelayan (ada hasil)",p:15000,v:.005,d:0,n:0,y:.00003},{e:"🌴",nm:"Kebun Sawit (ada hasil)",p:30000,v:.004,d:.0001,n:0,y:.00002},{e:"🏠",nm:"Rumah Kos (ada sewa)",p:25000,v:.003,d:.00015,n:0,y:.00004},{e:"🥈",nm:"Perak Batangan",p:80,v:.012,d:.00005,n:0},{e:"🐄",nm:"Sapi Ternak",p:900,v:.01,d:.0001,n:0},{e:"☕",nm:"Warung Kopi (ada laba)",p:2500,v:.006,d:0,n:0,y:.00006}],DC=["Kak, tagihan jatuh tempo ya 🙏 (nada halus, niat kasar)","Kami sudah hubungi 47 kontak di HP Anda 📞","Utang itu janji, bukan pajangan. Segera bayar!","Selamat pagi, ini penagih ramah. Besok kami yang datang 😊","Foto KTP kamu sudah jadi wallpaper kantor kami 🖼️"];let F=[],tab=0,flt=0,dirty=1,tm,pw=0,nu=0,PID=0,oc=null,bet=10,lock=0;
+function msg(x){const e=document.createElement("div");e.textContent=x;$("#ts").append(e);setTimeout(()=>e.remove(),3500)}
+function post(h,e,x,s,tg,l,rt){F.unshift({h,e,x,s:s.i,tg,l,r:rt,k:S.k,ts:Date.now(),id:++PID,c:[],lk:0});if(F.length>120)F.pop();dirty=1;if(tab!=1)nu++}
+const fx=(s,x)=>x.replace(/{n}/g,s.n).replace(/{t}/g,s.t).replace(/{q}/g,s.q);
+function news(s,x,tg){const a=N[r(3)];post(a[0],a[1],x,s,tg,300+r(4000),50+r(900));for(let j=r(3);j>0;j--){const p=P[r(P.length)];F[0].c.push({h:p[0],x:RP[r(RP.length)]})}}
+function react(s,d){const a=d<0?NG:PS;for(let j=0,n=1+r(3);j<n;j++){const p=P[r(P.length)];post(p[0],p[1],fx(s,a[r(a.length)]),s,"",r(400),r(40))}}
+function adv(s){const t=T[s.y],bad="LRHB".includes(s.y);
+if(s.st==0){s.st=1;s.cd=6+r(6);s.p*=.94;news(s,fx(s,t[0]),"RUMOR");react(s,-1)}
+else if(s.st==1){s.st=2;s.cd=7+r(6);s.p*=t[4];news(s,fx(s,t[1]),"KRISIS");
+ if(bad&&s.h>0){if(S.ins>0){S.ins--;msg("🧾 Asuransi dompet mengganti kerugianmu di "+s.t+"!")}else if(R()>s.sec*.18){const l=s.h*.3;msg(`💸 Asetmu di ${s.t} terdampak, -30% (${m(l*s.p)})`);s.h-=l;post("@leakwatch_id","🚨",`Korban ${s.t} bertambah. Salah satunya kamu. Naikkan audit.`,s,"KAMU",1,0)}else msg(`🛡️ Audit menyelamatkan asetmu di ${s.t}!`)}
+ react(s,t[4]<1?-1:1);if(R()<.7)op(OA[0],fx(s,OFC[r(OFC.length)]),s);if(R()<.4){const a=OA[1+r(OA.length-1)];op(a,fx(s,"Pernyataan resmi: kami tidak terkait dengan {n} ({t}). Mohon tidak mencatut nama kami."),s)}}
+else{const g=R()<.5+s.sec*.05;s.p*=g?1.45:.55;s.st=0;s.cd=45+r(40);news(s,fx(s,t[g?2:3]),g?"PULIH":"AMBRUK");react(s,g?1:-1);
+ if(s.p<s.p0*.04){if(s.h>0)msg(`🪦 ${s.t} delisting. Asetmu hangus.`);s.g++;s.n=s.n.replace(/ v\d+$/,"")+" v"+s.g;s.p=s.p0*(.5+R());s.o=s.p;s.h=0;s.sec=0;news(s,`🔄 Proyek lama bangkit lagi: ${s.n} relist dengan wajah baru. Percaya? Terserah kamu.`,"RELIST")}}}
+function tick(){S.k++;
+V.forEach(s=>{s.p=Math.max(1e-4,s.p*(1+(R()-.5)*(s.st?.06:.024)+(s.st?0:.0003)));
+ if(s.cd>0){s.cd--;if(!s.cd&&s.st)adv(s)}else if(!s.st&&R()<.0012)adv(s);
+ if(S.k%30==0)s.o=s.p;s.hs.push(s.p);if(s.hs.length>24)s.hs.shift()});
+if(R()<.2){const s=V[r(V.length)],c=s.p/s.o-1;post(...P[r(P.length)].slice(0,2),Math.abs(c)>.05?`${s.t} ${c>0?"naik":"turun"} ${Math.abs(c*100).toFixed(1)}% hari ini ${c>0?"🚀":"😬"}`:fx(s,AM[r(AM.length)]),s,"",r(300),r(30))}
+S.sv*=1.0001;S.ln*=1.0003;S.pj*=1.0025;AS.forEach(a=>{a.p=Math.max(1,a.p*(1+(R()-.5)*a.v+a.d));if(a.y)S.cash+=a.n*a.p*a.y});if(S.pj>1){if(R()<.015)bp("@dc_galak","📞",DC[r(DC.length)],"PINJOL");if(S.pj>Math.max(4000,(nwf()+S.ln+S.pj)*.5)){S.cash*=.6;V.forEach(s=>s.h*=.6);AS.forEach(a=>a.n*=.6);S.pj*=.6;msg("🚨 Penagih pinjol menyita 40% asetmu!");bp("@kabar_kripto","📰","Penagih pinjol geruduk rumah seorang trader kripto. Netizen: kasihan, tapi sudah diperingatkan.","SITA")}}if(R()<.07){const a=OA[r(OA.length)];op(a,a[2][r(a[2].length)])}const nw=nwf();if(nw<50){S.cash+=1000;S.ln=S.pj=0;msg("💀 Pailit! Utang dihapus, paman kasih modal darurat Rp15 jt.")}
+if(S.k%10==0)sv();upd();if(tab==3)ub();if(tab==5&&!lock)kc();if(tab==2||dirty&&tab==1&&oc==null)rf()}
+const nwf=()=>S.cash+S.sv-S.ln-S.pj+AS.reduce((a,x)=>a+x.n*x.p,0)+V.reduce((a,s)=>a+s.h*s.p,0);
+const ok=s=>flt==0||(flt==1&&s.w)||(flt==2&&s.st>0)||(flt==3&&s.h>0);
+const mk=$("#mk");
+mk.innerHTML=V.map(s=>`<div class="r" data-i="${s.i}"><div class="rm"><div class="tk"><b>${s.t}</b><small></small></div><svg class="sk" viewBox="0 0 56 22"><polyline fill="none" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="dg"></div><div class="pc"><b></b><small></small></div></div><div class="dt"><div class="inf"></div><div class="bt"><button data-a="b">Beli 10%</button><button data-a="s">Jual semua</button><button data-a="a">Audit</button><button data-a="w">⭐ Pantau</button></div></div></div>`).join("");
+const rows=[...mk.children];
+function upd(){let dr=0,u=0,d=0;V.forEach((s,i)=>{const e=rows[i],c=s.p/s.o-1;if(s.st)dr++;c>=0?u++:d++;
+ e.className="r"+(s.st==1?" dr":s.st==2?" cr":"")+(e.classList.contains("op")?" op":"");
+ e.style.display=ok(s)?"":"none";
+ e.querySelector("small").textContent=(s.w?"⭐ ":"")+s.n;
+ e.querySelector(".dg").textContent=s.st==1?"👀":s.st==2?"🔥":"";
+ const pc=e.querySelector(".pc"),pb=pc.firstChild,ps=pc.lastChild,dir=s.p>s.lp?"fu":s.p<s.lp?"fd":"";s.lp=s.p;pb.textContent=m(s.p);ps.textContent=(c>=0?"▲ ":"▼ ")+Math.abs(c*100).toFixed(1)+"%";ps.className=c>=0?"up":"dn";pc.className="pc";if(dir){void pc.offsetWidth;pc.className="pc "+dir}const hs=s.hs,mn=Math.min(...hs),rg=Math.max(...hs)-mn||1,sk=e.querySelector(".sk");sk.setAttribute("class",hs[hs.length-1]>=hs[0]?"sk":"sk dn");sk.firstChild.setAttribute("points",hs.map((v,j)=>(j*56/(hs.length-1||1)).toFixed(1)+","+(20-(v-mn)/rg*18).toFixed(1)).join(" "));
+ if(e.classList.contains("op")){e.querySelector(".inf").innerHTML=`Punya: <b>${s.h.toFixed(2)}</b> unit (${m(s.h*s.p)}) · Keamanan: ${"■".repeat(s.sec)}${"□".repeat(5-s.sec)}<br>Jenis drama: ${({L:"data bocor",R:"rug pull",H:"peretasan",C:"skandal CEO",F:"hard fork",A:"audit",W:"paus",G:"regulator",B:"bridge",D:"airdrop"})[s.y]} · Audit berikutnya ${m(200*(s.sec+1))}`}});
+const w=nwf();$("#cs").textContent=m(S.cash);$("#nw").innerHTML=m(w)+` <span class="${w>=pw?"up":"dn"}">${w>=pw?"▲":"▼"}</span>`;pw=w;$("#dr").innerHTML=`<span class="up">▲${u}</span> <span class="dn">▼${d}</span> 🔥${dr}`;const bd=$("#bd");bd.hidden=!nu||tab==1;bd.textContent=nu>99?"99+":nu}
+function rf(){if(tab==2)return rw();dirty=0;const iv=$("#ci"),val=iv?iv.value:"",foc=iv&&document.activeElement==iv,L=F.filter(p=>ok(V[p.s])).slice(0,40);
+$("#fd").innerHTML='<div class="tr">'+TR()+'</div>'+(L.map(p=>`<div class="po${p.tg?" nw":""}${VF.has(p.h)?" of":""}" data-id="${p.id}"><div class="av">${p.e}</div><div class="pb"><div class="ph"><b>${p.h}</b>${VF.has(p.h)?" ✅":""} ${p.tg?`<i class="tg">${p.tg}</i> `:""}${p.b||V[p.s].t} · ${ago(p.ts)}</div><div class="pt">${p.x}</div><div class="pl"><button data-a="l" class="lk${p.lk?" on":""}">❤ ${p.l}</button><button data-a="c">💬 ${p.c.length}</button> 🔁 ${p.r}</div>${oc==p.id?`<div class="cm">${p.c.map(c=>`<div><b>${c.h}</b> ${c.x}</div>`).join("")}<div class="cb"><input id="ci" maxlength="140" placeholder="Tulis komentar..." enterkeyhint="send"><button data-a="s">Kirim</button></div></div>`:""}</div></div>`).join("")||'<div class="em">Belum ada kicauan di filter ini. Tunggu drama berikutnya atau ganti filter.</div>');const n=$("#ci");if(n){n.value=val;if(foc)n.focus()}}
+function sv(){try{localStorage.setItem("cc1",JSON.stringify({c:S.cash,v:V.map(s=>[s.h,s.sec,s.w]),b:[S.sv,S.ln,S.pj],a:AS.map(a=>a.n)}))}catch(e){}}
+try{const d=JSON.parse(localStorage.getItem("cc1")||"null");if(d&&d.c>0){S.cash=d.c;d.v.forEach((a,i)=>{V[i].h=a[0];V[i].sec=a[1];V[i].w=a[2]});if(d.b){[S.sv,S.ln,S.pj]=d.b;d.a.forEach((n,i)=>AS[i]&&(AS[i].n=n))}}}catch(e){}
+mk.onclick=e=>{const row=e.target.closest(".r");if(!row)return;const s=V[+row.dataset.i],b=e.target.closest("button");
+if(!b){row.classList.toggle("op");upd();return}
+const a=b.dataset.a;
+if(a=="b"){const amt=S.cash*.1;if(amt<1)return msg("Kas habis.");s.h+=amt/s.p;S.cash-=amt}
+else if(a=="s"){if(s.h<=0)return;S.cash+=s.h*s.p;s.h=0}
+else if(a=="a"){const c=200*(s.sec+1);if(s.sec>=5)return msg("Keamanan sudah maksimal.");if(S.cash<c)return msg("Kas kurang untuk audit "+m(c));S.cash-=c;s.sec++}
+else s.w=s.w?0:1;
+upd()};
+const tb=document.querySelectorAll(".bn button"),ch=document.querySelectorAll(".chips button");
+function go(t){tab=t;tb.forEach(x=>x.classList.toggle("on",+x.dataset.t==t));mk.hidden=t!=0;$("#fd").hidden=t!=1;$("#pf").hidden=t!=2;$("#bk").hidden=t!=3;$("#tk").hidden=t!=4;$("#kz").hidden=t!=5;if(t!=1)oc=null;document.body.dataset.tab=t;if(t==1)nu=0;$("#ttl").textContent=["⛓ Chain Chaos","💬 Kicau","👛 Dompet","🏦 Bank Rakyat","🛒 Toko","🎰 Kasino"][t];if(t==1||t==2)rf();if(t==3)ub();if(t==4)tu();if(t==5)kc();$("main").scrollTop=0;upd()}
+tb.forEach(b=>b.onclick=()=>go(+b.dataset.t));
+const TR=()=>[...V].sort((a,b)=>Math.abs(b.p/b.o-1)-Math.abs(a.p/a.o-1)).slice(0,5).map(s=>`<span>#${s.t} ${s.p>=s.o?"▲":"▼"}${Math.abs((s.p/s.o-1)*100).toFixed(0)}%</span>`).join("");
+function rw(){const w=nwf(),H=V.filter(s=>s.h>0).sort((a,b)=>b.h*b.p-a.h*a.p);$("#pf").innerHTML=`<div class="wc"><small>Total kekayaan</small><b>${m(w)}</b><small>Kas ${m(S.cash)} · Aset ${m(w-S.cash)}</small></div>`+(H.map(s=>`<div class="r"><div class="rm"><div class="tk"><b>${s.t}</b><small>${s.h.toFixed(2)} unit · ${Math.round(s.h*s.p/w*100)}% portofolio</small></div><div class="pc"><b>${m(s.p)}</b><small class="${s.p>=s.o?"up":"dn"}">${m(s.h*s.p)} ${s.p>=s.o?"▲":"▼"}</small></div></div></div>`).join("")||'<div class="em">Belum punya aset. Buka tab Pasar dan beli server pertamamu.</div>')+CS}
+ch.forEach(b=>b.onclick=()=>{flt=+b.dataset.f;ch.forEach(x=>x.classList.toggle("on",x==b));upd();if(tab)rf()});
+const SP=[0,1,2,4],SL=["⏸ Jeda","▶ x1","⏩ x2","⏩ x4"];let si=1;
+function run(){clearInterval(tm);S.sp=SP[si];if(S.sp)tm=setInterval(tick,1200/S.sp);$("#sp").textContent=SL[si]}
+$("#sp").onclick=()=>{si=(si+1)%4;run()};
+post("@kabar_kripto","📰","Selamat datang di Chain Chaos! 50 server kripto, satu pasar yang tidak pernah tidur. Beli, pantau ⭐, dan semoga datamu tidak bocor.",V[0],"INFO",999,12);
+const RP=["Setuju bro 💯","Ngawur lu 😂","Nitip doa buat portofolio","Sudah kubilang kan","Valid sih","Admin, tolong respon!","Wkwkwk ini sih 🤣","Orang baru ya? Selamat datang di neraka cuan 🔥"],esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function op(a,x,s){post(a[0],a[1],x,s||V[0],"RESMI",800+r(9000),100+r(900));if(!s)F[0].b="📢"}
+function ago(t){const d=(Date.now()-t)/1000;return d<60?"Baru saja":d<3600?Math.floor(d/60)+" menit lalu":d<86400?Math.floor(d/3600)+" jam lalu":d<172800?"Kemarin":Math.floor(d/86400)+" hari lalu"}
+const dF=new Intl.DateTimeFormat("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Jakarta"}),tF=new Intl.DateTimeFormat("id-ID",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"Asia/Jakarta"});
+function clk(){const d=new Date();$("#ck").textContent="v1.6 · "+dF.format(d)+" · "+tF.format(d).replace(":",".")+" WIB"}
+function bp(h,e,x,tg){post(h,e,x,V[0],tg,r(400),r(40));F[0].b="🏦"}
+function ub(){const w=nwf();$("#b0").textContent=m(w);$("#b1").textContent=m(S.sv);$("#b2").textContent=m(S.ln);$("#b3").textContent=m(S.pj);$("#b2l").textContent=m(Math.max(0,Math.max(5000,(w+S.ln+S.pj)*.5)-S.ln));AS.forEach((a,i)=>{$("#aN"+i).textContent=`Punya ${+a.n.toFixed(1)} · ${m(a.n*a.p)}`;$("#aP"+i).textContent=m(a.p)})}
+$("#bk").innerHTML=`<div class="wc"><small>Kekayaan bersih</small><b id="b0"></b><small>Semua aset + tabungan − utang</small></div><div class="bc"><h3>💰 Tabungan</h3><p>Saldo <b id="b1"></b> · bunga 0,5%/mnt, aman</p><div class="bt"><button data-k="sv+">Setor 10%</button><button data-k="sv-">Tarik semua</button></div></div><div class="bc"><h3>🏛️ Pinjaman Resmi</h3><p>Utang <b id="b2"></b> · bunga 1,5%/mnt · sisa limit <b id="b2l"></b></p><div class="bt"><button data-k="ln+">Ajukan Rp30 jt</button><button data-k="ln-">Lunasi</button></div></div><div class="bc pj"><h3>📱 Pinjol Kilat</h3><p>Utang <b id="b3"></b> · bunga 13%/mnt, penagih galak. Utang menumpuk bikin asetmu disita!</p><div class="bt"><button data-k="pj+">Cair Rp15 jt</button><button data-k="pj-">Lunasi</button></div></div><h3>🏘️ Aset</h3>`+AS.map((a,i)=>`<div class="r"><div class="rm"><div class="tk"><b>${a.e} ${a.nm}</b><small id="aN${i}"></small></div><div class="pc"><b id="aP${i}"></b></div></div><div class="bt" style="padding:0 12px 12px"><button data-k="a+${i}">Beli 1</button><button data-k="a-${i}">Jual semua</button></div></div>`).join("");
+$("#bk").onclick=e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.k;
+if(k=="sv+"){const x=S.cash*.1;if(x<1)return msg("Kas habis.");S.cash-=x;S.sv+=x}
+else if(k=="sv-"){S.cash+=S.sv;S.sv=0}
+else if(k=="ln+"){if(S.ln+2000>Math.max(5000,(nwf()+S.ln+S.pj)*.5))return msg("Pengajuan ditolak: limit kredit terlampaui. Lunasi dulu.");S.ln+=2000;S.cash+=2000;bp("@bapak_kpr_cicilan","🏦","Baru ajukan kredit Rp30 jt di Bank Rakyat. Semoga ACC dan tidak kebablasan.","BANK");op(OA[1],"Pengajuan kredit disetujui. Bayar tepat waktu, tidur nyenyak 😴")}
+else if(k=="ln-"){const x=Math.min(S.cash,S.ln);S.cash-=x;S.ln-=x}
+else if(k=="pj+"){S.pj+=1000;S.cash+=1000;bp("@anon_leaker","🎭","Ada yang baru cairin pinjol kilat. Bunganya serem, kontaknya siap disebar 🍿","PINJOL");if(R()<.5)op(OA[0],"Pinjol ilegal bukan solusi: bunga mencekik, data pribadi disalahgunakan. Gunakan layanan berizin.")}
+else if(k=="pj-"){const x=Math.min(S.cash,S.pj);S.cash-=x;S.pj-=x}
+else{const a=AS[+k[2]];if(k[1]=="+"){if(S.cash<a.p)return msg("Kas kurang.");S.cash-=a.p;a.n++}else{S.cash+=a.n*a.p;a.n=0}}
+upd();ub()};
+const TK=[["🧾","Asuransi Dompet","Mengganti 1 kerugian dari kebocoran, hack, rug pull, atau bridge jebol.",300,"i"],["🎣","Pancing Drama","Memicu rumor di satu server acak. Siap cuan atau rungkad.",100,"x"],["📣","Tim Buzzer","Semua server di daftar ⭐ Pantau naik 8%. Netizen mulai curiga.",250,"z"],["🛡️","Audit Massal","Keamanan +1 di semua server yang kamu pegang.",500,"a"]];
+function tu(){$("#ins").textContent=S.ins}
+$("#tk").innerHTML=`<div class="wc"><small>Toko Chain</small><b>🛒 Belanja</b><small>Asuransi aktif: <span id="ins">0</span></small></div>`+TK.map((t,i)=>`<div class="bc"><h3>${t[0]} ${t[1]}</h3><p>${t[2]}</p><div class="bt"><b style="align-self:center">${m(t[3])}</b><button data-k="${i}">Beli</button></div></div>`).join("");
+$("#tk").onclick=e=>{const b=e.target.closest("button");if(!b)return;const t=TK[+b.dataset.k],pr=t[3],k=t[4];if(S.cash<pr)return msg("Kas kurang.");
+if(k=="i")S.ins++;
+else if(k=="x"){const c=V.filter(s=>!s.st);if(!c.length)return msg("Semua server sedang drama!");const s=c[r(c.length)];adv(s);msg("🎣 Umpan termakan: ada yang tidak beres di "+s.t)}
+else if(k=="z"){const w=V.filter(s=>s.w);if(!w.length)return msg("Pantau (⭐) dulu minimal satu server.");w.forEach(s=>s.p*=1.08);post("@intel_nyinyir","🕶️","Mendadak semua buzzer promosiin server tertentu. Hmm... 🤨",w[0],"IKLAN",r(500),r(50))}
+else{const h=V.filter(s=>s.h>0&&s.sec<5);if(!h.length)return msg("Tidak ada server yang bisa diaudit.");h.forEach(s=>s.sec++)}
+S.cash-=pr;upd();tu()};
+const SY=["🍒","🍋","🔔","💎","7️⃣"];
+function kc(){$("#bt").textContent=`Taruhan ${m(bet)} · Kas ${m(S.cash)}`;$("#gs").textContent=`Total menang ${m(S.gw)} · kalah ${m(S.gl)}`}
+function fin(mu,t){const w=bet*mu;S.cash+=w;lock=0;if(w>bet)S.gw+=w-bet;else S.gl+=bet-w;$("#gr").textContent=t+" · "+(w>bet?"menang "+m(w-bet):w==bet?"balik modal":"kalah "+m(bet-w));kc();
+if(mu>=8)bp("@judol_addict","🎰",`Baru menang ${m(w)} di Kasino Chain! Besok gaji aman 😎`,"KASINO");else if(!w&&bet>=500&&R()<.5)bp("@anak_kos_degen","🏠","Kalah lagi di kasino... uang kos bulan ini 😭","KASINO");
+if(R()<.12)op(OA[0],"Judi online ilegal dan merusak keuangan. Ini hanya simulasi, jangan ditiru di dunia nyata.")}
+function gm(k,arg){if(lock)return;if(S.cash<bet)return msg("Kas tidak cukup untuk taruhan ini.");S.cash-=bet;lock=1;
+if(k=="s"){let n=0;const iv=setInterval(()=>{$("#rl").textContent=[0,0,0].map(()=>SY[r(5)]).join(" ");if(++n>8){clearInterval(iv);const a=[r(5),r(5),r(5)],u=new Set(a).size;$("#rl").textContent=a.map(i=>SY[i]).join(" ");fin(u==1?15:u==2?.5:0,u==1?"JACKPOT!":u==2?"Dua sama":"Zonk")}},70)}
+else if(k=="d"){const a=1+r(6),b=1+r(6),t=a+b,w=arg=="b"?t>=8:t<=6;$("#rl").textContent=`🎲 ${a} + ${b} = ${t}`;fin(w?2:0,w?"Tebakan benar":t==7?"Pas 7, bandar menang":"Meleset")}
+else{const n=r(10);$("#rl").textContent=`🔢 Angka: ${n}`;fin(n==arg?8:0,n==arg?"Tebakan jitu!":"Meleset")}}
+$("#kz").innerHTML=`<div class="wc"><small>Kasino Chain (simulasi)</small><b id="rl">🎰 🎰 🎰</b><small id="gr">Uang di sini bukan uang sungguhan. Judi sungguhan berisiko dan ilegal di Indonesia.</small></div><div class="bc"><h3>Taruhan</h3><p id="bt"></p><div class="chp">${[10,100,500,2000].map(v=>`<button data-k="b${v}"${v==10?' class="on"':""}>${m(v)}</button>`).join("")}</div></div><div class="bc"><h3>🎰 Slot</h3><p>3 sama bayar 15x · 2 sama balik 0,5x</p><div class="bt"><button data-k="s">Putar</button></div></div><div class="bc"><h3>🎲 Dadu</h3><p>Besar (8–12) atau Kecil (2–6). Angka 7 bandar menang. Bayar 2x</p><div class="bt"><button data-k="db">Besar</button><button data-k="dk">Kecil</button></div></div><div class="bc"><h3>🔢 Tebak Angka</h3><p>Pilih 0–9. Bayar 8x</p><div class="num">${[...Array(10).keys()].map(i=>`<button data-k="n${i}">${i}</button>`).join("")}</div></div><p id="gs" class="em"></p>`;
+$("#kz").onclick=e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.k;if(k[0]=="b"){bet=+k.slice(1);document.querySelectorAll(".chp button").forEach(x=>x.classList.toggle("on",x==b));kc();return}gm(k[0],k.slice(1))};
+$("#fd").onclick=e=>{const b=e.target.closest("button");if(!b||!b.dataset.a)return;const p=F.find(x=>x.id==b.closest(".po").dataset.id);if(!p)return;const a=b.dataset.a;
+if(a=="l"){p.lk=!p.lk;p.l+=p.lk?1:-1}
+else if(a=="c")oc=oc==p.id?null:p.id;
+else{const i=$("#ci"),x=i.value.trim();if(!x)return;p.c.push({h:"@kamu",x:esc(x)});i.value="";setTimeout(()=>{const n=P[r(P.length)];p.c.push({h:n[0],x:RP[r(RP.length)]});msg("💬 "+n[0]+" membalas komentarmu");if(tab==1)rf()},1500+r(2500))}
+rf()};
+clk();setInterval(clk,1000);upd();run();setTimeout(()=>$("#sp0").classList.add("x"),1300);
+</script></body></html>

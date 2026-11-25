@@ -1,0 +1,19 @@
+CHAIN CHAOS — PERSIAPAN APLIKASI ANDROID
+
+Isi folder:
+- index.html: game Chain Chaos
+- manifest.webmanifest: identitas aplikasi web
+- sw.js: cache/offline dasar
+- icons/: ikon aplikasi
+
+LANGKAH SELANJUTNYA:
+1. Unggah isi folder ini ke hosting HTTPS (misalnya GitHub Pages).
+2. Buka URL situs HTTPS tersebut di PWABuilder.
+3. Pilih paket Android (TWA) dan ikuti proses pembuatan paket.
+4. Uji APK di HP sebelum memikirkan publikasi Play Store.
+
+CATATAN:
+- Ini adalah paket sumber PWA, BUKAN file APK.
+- Untuk membuat APK/TWA dibutuhkan URL HTTPS yang sudah aktif.
+- Simpan backup proyek asli dan jangan menghapus data browser saat sedang menguji progres.
+- Game menyimpan progres di penyimpanan lokal browser/perangkat. Progres belum tersinkron antarperangkat.
